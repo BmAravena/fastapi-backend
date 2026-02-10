@@ -28,3 +28,10 @@ class UserPatch(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+
+# Token Structure
+class Token(BaseModel):
+    access_token: str
+    token_type: str
