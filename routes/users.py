@@ -1,8 +1,11 @@
 from fastapi import Depends, APIRouter, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from crud import user_crud
 from schemas import schemas
 from dependencies.dependencies import get_db
 from sqlalchemy.orm import Session
+from core.security import oauth2_scheme, authenticate_user, create_access_token, check_admin
+
 
 router = APIRouter(tags=["users"], # Group on documentation
                    responses={404: {"msg": "Not found"}})
@@ -34,8 +37,21 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
     access_token = create_access_token(data={"sub": user.email})
     return {"access_token": access_token, "token_type": "bearer"}
 
+
 @router.get("/users/", response_model=list[schemas.UserOut])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = user_crud.get_users_order(db, skip=skip, limit=limit)
     return users
 
+
+@router.get("/users/{user_id}", response_model=schemas.UserOut)
+def read_user(user_id: int, db: Session = Depends(get_db)):
+    db_user = user_crud.get_user(db, user_id=user_id)
+    if db_user is None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User not found")
+    return db_user
+
+
+@router.get("/admin/")
+async def admin_route(current_user: schemas.UserOut = Depends(check_admin)):
+    return {"msg": f"Hello {current_user.email}, welcome to administrators panel"}
