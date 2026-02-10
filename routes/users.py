@@ -11,7 +11,6 @@ router = APIRouter(tags=["users"], # Group on documentation
                    responses={404: {"msg": "Not found"}})
 
 
-
 # End points
 @router.post("/users/", response_model=schemas.UserOut)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
