@@ -1,7 +1,10 @@
 from sqlalchemy.orm import Session
-import models, schemas
+#import models, schemas
+from models import models
+from schemas import schemas
 from fastapi import HTTPException
-from core.security import hash_password
+#from core.security import hash_password
+from core.hash_security import hash_password
 #from database_connection import sesion
 
 

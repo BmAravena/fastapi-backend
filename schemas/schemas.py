@@ -18,8 +18,12 @@ class UserOut(UserBase): # This will be output mode user
     role: str
     is_active: bool
     created_at: datetime
-    class Config:
-        orm_mode = True
+    model_config = {
+    "from_attributes": True
+    }
+
+ #   class Config:
+ #       orm_mode = True
 
 
 class UserPatch(BaseModel):

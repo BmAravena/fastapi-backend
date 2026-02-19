@@ -1,11 +1,15 @@
 from fastapi import Depends, HTTPException, status
 from crud.user_crud import get_user
-from core.security import decode_token
+#from core.security import decode_token
 from core.database_connection import sessionLocal, engine
-from core.security import oauth2_scheme
+#from core.security import oauth2_scheme
 from schemas.schemas import UserOut
 from sqlalchemy.orm import Session
+from core.token import oauth2_scheme, decode_token
 
+
+
+    
 
 # Dependence to get database Session
 def get_db():
