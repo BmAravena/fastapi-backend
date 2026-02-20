@@ -4,7 +4,6 @@ from fastapi import HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 
-
 SECRET_KEY = "super_secret_password"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 15
