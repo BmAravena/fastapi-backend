@@ -1,5 +1,5 @@
 from fastapi import Depends, HTTPException, status
-from crud.user_crud import get_user
+from crud.user_crud import get_user_by_email
 #from core.security import decode_token
 from core.database_connection import sessionLocal, engine
 #from core.security import oauth2_scheme
@@ -8,8 +8,6 @@ from sqlalchemy.orm import Session
 from core.token import oauth2_scheme, decode_token
 
 
-
-    
 
 # Dependence to get database Session
 def get_db():
@@ -26,7 +24,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
     email = payload.get("sub")
     if email is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
-    user = get_user(db, email)
+    user = get_user_by_email(db, email)
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not found user")
     return user
